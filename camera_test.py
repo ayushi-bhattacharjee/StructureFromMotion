@@ -7,7 +7,7 @@ if not cap.isOpened():
     print("Error: Could not open camera.")
     exit()
 
-print("Press 'q' to quit.")
+print("Press 'q' to quit and save the image as 'Camera Test Image.jpg'.")
 
 while True:
     # Capture frame-by-frame
@@ -15,15 +15,19 @@ while True:
 
     if not ret:
         print("Error: Failed to capture image.")
-        break
+        break  # Exit loop if there's an error capturing the frame
 
     # Display the resulting frame
     cv2.imshow('Camera Feed', frame)
 
-    # Break the loop if 'q' is pressed
+    # Break the loop and save the image if 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        # Save the captured frame when 'q' is pressed
+        cv2.imwrite("Camera Test Image.jpg", frame)
+        print("Image saved as 'Camera Test Image.jpg'")
         break
 
 # Release the camera and close all OpenCV windows
 cap.release()
 cv2.destroyAllWindows()
+
