@@ -44,8 +44,11 @@ def main():
             print("Failed to grab frame")
             break
 
+         # Flip the frame horizontally (mirror image)
+        flipped_frame = cv2.flip(frame, 1)
+
         # Display the resulting frame
-        cv2.imshow('Camera Feed', frame)
+        cv2.imshow('Camera Feed', flipped_frame)
 
         # Check for key presses
         key = cv2.waitKey(1) & 0xFF
@@ -92,3 +95,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # python3 AccessCamera2.py --outdir /Users/ayla/Desktop/Research run command with directory specified

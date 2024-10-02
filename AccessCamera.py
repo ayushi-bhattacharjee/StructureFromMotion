@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import cv2
+import cv2 
 import os
 
 # make a output directory for photos
 # possibly add a command line argument to change this directory from a default
 # output format should be <outdir>/<iso-8601 date>.{png,mp4}
+#chmod +x
 
 def main():
     # Define paths
