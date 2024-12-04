@@ -1,0 +1,65 @@
+import cv2
+import os
+
+# Function to get the next photo number
+def get_next_photo_number(folder_path):
+    # Get a list of files in the folder
+    files = os.listdir(folder_path)
+    
+    # Filter only the files that match the "Photo #" pattern
+    photo_files = [f for f in files if f.startswith("Photo ") and f.endswith(".jpg")]
+    
+    # Extract numbers from the filenames and find the highest one
+    photo_numbers = [int(f.split(" ")[1].split(".")[0]) for f in photo_files if f.split(" ")[1].split(".")[0].isdigit()]
+    
+    # Return the next available number
+    return max(photo_numbers) + 1 if photo_numbers else 1
+
+# Open a connection to the camera (0 is the default camera)
+cap = cv2.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Error: Could not open camera.")
+    exit()
+
+print("Press 'p' to take a photo. Press 'q' to quit.")
+
+# Define the folder where images will be saved (replace YourUsername with your actual username)
+save_folder = r'C:\Users\ayubh\OneDrive\Desktop\StructureFromMotion'
+
+# Ensure the folder exists, if not create it
+if not os.path.exists(save_folder):
+    os.makedirs(save_folder)
+
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+
+    if not ret:
+        print("Error: Failed to capture image.")
+        break  # Exit loop if there's an error capturing the frame
+
+    # Display the resulting frame
+    cv2.imshow('Camera Feed', frame)
+
+    # Check if a key was pressed
+    key = cv2.waitKey(1) & 0xFF
+
+    if key == ord('p'):
+        # Get the next photo number
+        photo_number = get_next_photo_number(save_folder)
+
+        # Define the photo filename
+        photo_filename = f"Photo {photo_number}.jpg"
+
+        # Save the captured frame with the next available number
+        cv2.imwrite(os.path.join(save_folder, photo_filename), frame)
+        print(f"Image saved as '{photo_filename}'")
+
+    # Break the loop and exit if 'q' is pressed
+    if key == ord('q'):
+        break
+
+# Release the camera and close all OpenCV windows
+cap.release()
+cv2.destroyAllWindows()
